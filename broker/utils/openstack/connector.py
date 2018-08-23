@@ -417,9 +417,10 @@ class OpenStackConnector(object):
         return None
 
     def create_instance(self, nova, image_id, flavor_id, public_key, net_id):
+        nics = [{"net_id": net_id}]
         instance_name = "os-"+str(uuid.uuid4())[:8]
         server = nova.servers.create(instance_name, image=image_id,
-                                     flavor=flavor_id, key_name=public_key, nics=net_id, security_groups=["ssh-demo-access"])
+                                     flavor=flavor_id, key_name=public_key, nics=nics, security_groups=["ssh-demo-access"])
         return server.id
 
     def get_instance_status(self, nova, instance_id):
