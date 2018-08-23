@@ -70,6 +70,7 @@ class DeveloperApplicationExecutor(GenericApplicationExecutor):
             image_id = data['image_id']
             flavor_id = data['flavor_id']
             command = data['command']
+            net_id = data['net_id']
 
             # Get Nova (Openstack) client
             connector = os_connector.OpenStackConnector(LOG)
@@ -79,10 +80,9 @@ class DeveloperApplicationExecutor(GenericApplicationExecutor):
 
             # Create instance
             instance = connector.create_instance(nova, image_id, flavor_id,
-                                                 public_key)
+                                                 public_key, net_id)
 
             print "Instance: %s"  % (instance)
-
  
             # Retrive network information of instance
             instance_status = connector.get_instance_status(nova, instance)
@@ -94,8 +94,13 @@ class DeveloperApplicationExecutor(GenericApplicationExecutor):
                 time.sleep(2)
 
             time.sleep(20)
+            print "Getting networks"
             instance_net = connector.get_instance_networks(nova, instance)
+
+            print "Getting instance ip"
             instance_ip = instance_net.values()[0][0]
+
+            print "Connecting to the instance"
             conn = self._get_ssh_connection(instance_ip, api.key_path)
 
             # Execute application
