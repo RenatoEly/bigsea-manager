@@ -94,13 +94,9 @@ class DeveloperApplicationExecutor(GenericApplicationExecutor):
                 time.sleep(2)
 
             time.sleep(20)
-            print "Getting networks"
+
             instance_net = connector.get_instance_networks(nova, instance)
-
-            print "Getting instance ip"
             instance_ip = instance_net.values()[0][0]
-
-            print "Connecting to the instance"
             conn = self._get_ssh_connection(instance_ip, api.key_path)
 
             # Execute application
@@ -132,9 +128,13 @@ class DeveloperApplicationExecutor(GenericApplicationExecutor):
             self.update_application_state("Error")
 
     def _get_ssh_connection(self, ip, key_path):
+        print "Getting ssh key"
         keypair = paramiko.RSAKey.from_private_key_file(key_path)
+        print "Getting paramiko client"
         conn = paramiko.SSHClient()
+        print "Setting policy"
         conn.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        print "Connecting to the host"
         conn.connect(hostname=ip, username="ubuntu", pkey=keypair)
         return conn
 
