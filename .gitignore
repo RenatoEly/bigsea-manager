@@ -2,6 +2,7 @@
 .tox/
 manager.cfg
 broker.cfg
+Requestjson.json
 *.egg-info/
 dist/
 build/
