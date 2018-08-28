@@ -105,13 +105,11 @@ class DeveloperApplicationExecutor(GenericApplicationExecutor):
                 LOG.log("Fail to connect")
                 LOG.log(e.message)
 
-                print
-                "Fail to connect"
-                print
-                e.message
+                print "Fail to connect"
+                print e.message
 
                 # Remove instances after the end of execution of application
-                print "Remove instance"
+                print "Removing instance"
                 connector.remove_instance(nova, instance)
 
                 self.update_application_state("OK")
